@@ -1,0 +1,6 @@
+{
+    "mongo_URL":"mongodb://localhost/social_media_database",
+    "jwt_secrete":"jwtprivatekey",
+    "git_client_id":"e4d13f3664cfa967c762",
+    "git_client_secrete":"932d5555e55891f691f947dfb5398b733b62a4ce "
+}
