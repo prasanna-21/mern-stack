@@ -183,6 +183,7 @@ const getUserProfile=async(req,res)=>{
 //remove profile and user based on user id
 const removeProfileController=async(req,res)=>{
     try{
+     await Post.deleteMany({user:req.id});   
     await Profile.findOneAndRemove({user:req.id})
     //remove user
     await User.findOneAndRemove({_id:req.id});
@@ -226,6 +227,40 @@ const addProfileExpController=async(req,res)=>{
     }
 
 }
+const addProfileEducationController=async (req,res)=>{
+    const errors=validationResult(req);
+    if(!errors.isEmpty()) return res.status(400).json({errors:errors.array()})
+    const {school,
+           inter,
+            degree,
+            fieldofstudy,
+            from,
+            to,
+            description}=req.body;
+    const newEducation={
+                        school,
+                        inter,
+                        degree,
+                        fieldofstudy,
+                        from,
+                        to,
+                        description
+    };
+    try{
+        const profile=await Profile.findOne({user:req.id}).populate('user',['name','avatar']).exec();
+        if(!profile) return res.status(400).send("user profile not found")
+        profile.education.unshift(newEducation);
+        await profile.save();
+
+        res.json(profile);
+
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send("server error")
+    }
+
+
+}
 const removeProfileExpController=async(req,res)=>{
     try{
         const profile=await Profile.findOne({user:req.id});
@@ -240,6 +275,23 @@ const removeProfileExpController=async(req,res)=>{
         console.log(err.message);
         res.status(500).send("server error");
     }
+}
+const removeProfileEducation=async (req,res)=>{
+    try{
+
+        const profile=await Profile.findOne({user:req.id});
+
+        const eduIndex=profile.education.map(item=>item.id).indexOf(req.params.edu_id);
+
+        profile.education.splice(eduIndex,1);
+
+        await profile.save()
+        res.json(profile);
+    }catch(err){
+        console.log(err.message);
+        res.status(500).send("server error");
+    }
+
 }
 const getGithubController=(req,res)=>{
     try{
@@ -426,6 +478,8 @@ module.exports={
     getUserProfile,
     removeProfileController,
     addProfileExpController,
+    addProfileEducationController,
+    removeProfileEducation,
     removeProfileExpController,
     getGithubController,
     addPostsController,

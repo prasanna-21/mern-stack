@@ -1,6 +1,6 @@
 const express=require("express");
 const router=express.Router();
-const {userController,authController,authPostController,getProfileController,postProfileController,getAllProfiles,getUserProfile,removeProfileController,addProfileExpController,removeProfileExpController,getGithubController,addPostsController,getAllPost,getPost,removePost,likePost,unlikePost,addComment,removeComment}=require("../controllers/auth")
+const {userController,authController,authPostController,getProfileController,postProfileController,getAllProfiles,getUserProfile,removeProfileController,addProfileExpController,addProfileEducationController,removeProfileEducation,removeProfileExpController,getGithubController,addPostsController,getAllPost,getPost,removePost,likePost,unlikePost,addComment,removeComment}=require("../controllers/auth")
 const {check,validationResult}=require("express-validator")
 const auth=require('../middleware/auth');
 
@@ -40,8 +40,11 @@ router.put("/profile/experience",
                             check('title',"title is required").not().isEmpty(),
                             check('company','company is required').not().isEmpty(),
                         check('from','from is required').not().isEmpty()],addProfileExpController);
+router.put("/profile/education",[auth,check('school',"school is required").not().isEmpty(),
+                                     
+                                     check('degree',"degree is required").not().isEmpty()],addProfileEducationController)
 router.delete("/profile/experience/:exp_id",auth,removeProfileExpController);
-
+router.delete("/profile/education/:edu_id",auth,removeProfileEducation)
 router.get("/profile/github/:username",getGithubController);
 
 router.post('/posts',[auth,
