@@ -86,7 +86,7 @@ const authPostController=async(req,res)=>{
 const getProfileController=async (req,res)=>{
     try{
         console.log("hello")
-        const profile=await Profile.findOne({user:req.id});
+        const profile=await Profile.findOne({user:req.id}).populate("user",['name','avatar']).exec();
         console.log(profile)
         if(!profile) return res.status(400).send("user porfile not found");
 
@@ -171,7 +171,7 @@ const getAllProfiles=async (req,res)=>{
 }
 const getUserProfile=async(req,res)=>{
     try{
-        const profile=await Profile.findOne({user:req.params.user_id});
+        const profile=await Profile.findOne({user:req.params.user_id}).populate("user",['name','avatar']).exec();
         if(!profile) return res.satus(400).send("user profile not found");
 
         res.json(profile)
@@ -378,6 +378,7 @@ const removePost=async(req,res)=>{
 }
 const likePost=async(req,res)=>{
     try{
+        console.log("like from server")
         const post=await Post.findById(req.params.post_id);
         const likePost=post.likes.some(like=>like.user.toString()===req.id);
         if(likePost) return res.status(400).json({msg:" user like this post already"});

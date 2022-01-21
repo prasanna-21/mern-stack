@@ -31,7 +31,7 @@ router.post("/profile",
 router.get("/profile",getAllProfiles)
 
 //get profile for user id
-router.get("/user/:user_id",getUserProfile);
+router.get("/profile/:user_id",getUserProfile);
 
 router.delete('/profile',auth,removeProfileController);
 
@@ -57,7 +57,7 @@ router.get('/posts/:post_id',auth,getPost);
 router.delete('/posts/:post_id',auth,removePost)
 
 //like post on post id
-router.put('/posts/:post_id',auth,likePost);
+router.put('/posts/like/:post_id',auth,likePost);
 //unlike post
 router.put('/posts/unlike/:post_id',auth,unlikePost)
 //add comment

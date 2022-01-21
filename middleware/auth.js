@@ -2,7 +2,6 @@ const jwt=require('jsonwebtoken');
 const config=require('config')
 
 const auth=(req,res,next)=>{
-    // eslint-disable-next-line 
     const token=req.header('x-auth-token');
     if(!token) res.status(401).send("no token,authorization denied")
     try{
