@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE, CLEAR_PROFILE, ACCOUNT_DELETED } from './types';
+import { GET_PROFILE,GET_PROFILES, GET_REPOS,PROFILE_ERROR, UPDATE_PROFILE, CLEAR_PROFILE, ACCOUNT_DELETED } from './types';
 import { setAlert } from './alert';
 
 export const getCurrentProfile=()=>async dispatch=>{
@@ -10,6 +10,7 @@ export const getCurrentProfile=()=>async dispatch=>{
             payload:res.data
         })
     }catch(err){
+        dispatch({type:CLEAR_PROFILE})
         dispatch({
             type:PROFILE_ERROR,
             payload:{msg:err.response.statusText,status:err.response.status}
@@ -18,6 +19,40 @@ export const getCurrentProfile=()=>async dispatch=>{
     }
     
     
+}
+export const getAllProfiles=()=>async dispatch=>{
+    dispatch({ type: CLEAR_PROFILE });
+    try{
+        const res=await axios.get("http://localhost:8001/api/profile");
+        dispatch({type:GET_PROFILES,payload:res.data})
+
+    }catch(err){
+        dispatch({type:PROFILE_ERROR,
+        payload:{msg:err.response.statusText,status:err.response.status}})
+    }
+}
+export const getProfileById=(userId)=>async dispatch=>{
+    try{
+        const res=await axios.get(`http://localhost:8001/api/profile/${userId}`);
+
+        dispatch({type:GET_PROFILE,payload:res.data})
+
+    }catch(err){
+        dispatch({type:PROFILE_ERROR,
+        payload:{msg:err.response.statusText,status:err.response.status}})
+    }
+}
+
+export const getGitHubRepos=(username)=>async dispatch=>{
+    try{
+        const res=await axios.get(`http://localhost:8001/api/profile/github/${username}`);
+
+        dispatch({type:GET_REPOS,payload:res.data})
+
+    }catch(err){
+        dispatch({type:PROFILE_ERROR,
+        payload:{msg:err.response.statusText,status:err.response.status}})
+    }
 }
 
 export const createProfile=(formData,navigate,edit=false)=>async dispatch=>{
@@ -93,7 +128,7 @@ export const deleteEducation=id=>async dispatch=>{
 export const deleteAccount=()=>async dispatch=>{
     if(window.confirm('Are you sure want delete?')){
         try{
-            const res=await axios.delete('http://localhost:8001/api/profile');
+            await axios.delete('http://localhost:8001/api/profile');
             dispatch({type:CLEAR_PROFILE});
             dispatch({type:ACCOUNT_DELETED});
         }catch(err){

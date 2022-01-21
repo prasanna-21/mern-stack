@@ -22,6 +22,7 @@ export const loadUser=()=>async dispatch=>{
     }
     try{
         const res=await axios.get('http://localhost:8001/api/auth');
+        console.log(res.data);
         dispatch({type:USER_LOADED,payload:res.data})
     }catch(err){
         dispatch({type:AUTH_FAIL})

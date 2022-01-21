@@ -8,7 +8,7 @@ import EducationList from './EducationList';
 
 const Dashboard = () => {
     const {user}=useSelector(state=>state.auth);
-    const {loading,profile}=useSelector(state=>state.profile);
+    const {profile}=useSelector(state=>state.profile);
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(getCurrentProfile())

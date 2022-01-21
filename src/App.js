@@ -1,7 +1,7 @@
 import './App.css';
 import {Fragment,useEffect} from 'react';
-import {useDispatch,useSelector} from 'react-redux'
-import { BrowserRouter as Router,Routes,Route,Navigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import { BrowserRouter as Router,Routes,Route} from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Landing } from './components/layout/Landing';
 import Register from './components/auth/Register';
@@ -15,7 +15,10 @@ import CreateProfile from './components/profile-forms/CreateProfile';
 import EditProfile from './components/profile-forms/EdtProfile';
 import AddExperience from './components/profile-forms/AddExperience';
 import AddEducation from './components/profile-forms/AddEducation';
-
+import Profiles from './components/profiles/Profiles';
+import Profile from './components/profile/Profile';
+import Posts from './components/posts/Posts';
+import Post from './components/post/Post'
 if(localStorage.token){
   setAuthToken(localStorage.token)
 }
@@ -28,7 +31,7 @@ function App() {
   useEffect(()=>{
     dispatch(loadUser())
 
-  },[])
+  },[loadUser])
   // console.log(isAuthenticate)
   return (
       <Router>
@@ -39,11 +42,15 @@ function App() {
           <Route exact path="/" element={<Landing/>}/>
           <Route exact path="/register" element={<Register/>}/>
           <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/profiles" element={<Profiles/>}/>
+          <Route exact path="/profile/:id" element={<Profile/>}/>
           <Route exact path="/dashboard" element={<PrivateRoute component={Dashboard}/>}/>
           <Route exact path="/create-profile" element={<PrivateRoute component={CreateProfile}/>}/>
           <Route exact path="/edit-profile" element={<PrivateRoute  component={EditProfile}/>}/>
           <Route exact path="/add-experience" element={<PrivateRoute component={AddExperience}/>}/>
           <Route exact path="/add-education" element={<PrivateRoute component={AddEducation}/>}/>
+          <Route exact path="/posts" element={<PrivateRoute  component={Posts}/>} />
+          <Route exact path="/posts/:id" element={<PrivateRoute component={Post}/>} />
 
          </Routes>
 
