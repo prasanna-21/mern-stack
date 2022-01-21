@@ -1,0 +1,3 @@
+[submodule "mern-stack"]
+	path = mern-stack
+	url = https://github.com/prasanna-21/mern-stack.git
